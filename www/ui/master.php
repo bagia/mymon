@@ -27,7 +27,7 @@
         });
     </script>
 </head>
-<body>
+<body ng-controller="MasterController">
 <div id="topbar">
     <ul id="navigation-menu">
         <li><a href="#/">Home</a></li>
@@ -35,7 +35,7 @@
     </ul>
     <div id="user">
         <div ng-show="user.connected" id="mywatchdogs">
-            <a href="#/">My watchdogs {{watchdogs.count | parenthesis}}</a>
+            <a href="#/watchdogs">My watchdogs {{watchdogs_count | parenthesis}}</a>
         </div>
         <div id="avatar">
             <!-- Begin Facebook -->
