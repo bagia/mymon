@@ -7,23 +7,22 @@ namespace Prospe\Helper;
 
 class JsonHelper {
     // Serialization of objects, object members, and array of objects members
-    // Example id, member1, array1orobject1[memberA,memberB]
+    // Example id, member1, member2 => array(sub1, sub2 => array(subsub1, subsub2))
     public static function bundleFieldsOfObject(array $fields, $object) {
         $lightObject = new \stdClass();
-        foreach($fields as $field) {
-            if (preg_match_all('/[\w]+/', $field, $matches) > 1) {
+        foreach($fields as $key => $field) {
+            if (is_array($field)) {
                 // Serializing a sub-object
-                $matches = $matches[0];
-                $field = reset($matches);
-                array_shift($matches);
+                $sub_fields = $field;
+                $field = $key;
                 // Check if this an array of objects
                 if (is_array($object->{$field})) {
                     $lightField = array();
                     foreach($object->{$field} as $k => $v) {
-                        $lightField[$k] = self::bundleFieldsOfObject($matches,$v);
+                        $lightField[$k] = self::bundleFieldsOfObject($sub_fields,$v);
                     }
                 } else {
-                    $lightField = self::bundleFieldsOfObject($matches,$object->{$field});
+                    $lightField = self::bundleFieldsOfObject($sub_fields,$object->{$field});
                 }
             } else {
                 $lightField = $object->{$field};

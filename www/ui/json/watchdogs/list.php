@@ -1,4 +1,4 @@
 <?php
     echo \Prospe\Helper\JsonHelper::encodeFieldsOfArrayOfObjects(array(
-        'id', 'image', 'name', 'history_count', 'history[id,date]'
+        'id', 'image', 'name', 'history_count', 'history' => array('id', 'date')
     ), $watchdogs);
