@@ -35,7 +35,7 @@ class ImageController {
                     "POST",
                     array (
                         'access_token' => $facebook->getApplicationAccessToken(),
-                        'template' => "Watchdog \"{$watchdog->name}\" was triggered by a visit.",
+                        'template' => "Watchdog \"{$watchdog->name}\" was triggered.",
                         'href' => '/#/watchdogs'
                     )
                 );
