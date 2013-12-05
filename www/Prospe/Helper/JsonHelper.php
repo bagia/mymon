@@ -17,10 +17,7 @@ class JsonHelper {
                 $field = $key;
                 // Check if this an array of objects
                 if (is_array($object->{$field})) {
-                    $lightField = array();
-                    foreach($object->{$field} as $k => $v) {
-                        $lightField[$k] = self::bundleFieldsOfObject($sub_fields,$v);
-                    }
+                    $lightField = self::bundleFieldsOfArrayOfObjects($sub_fields, $object->{$field});
                 } else {
                     $lightField = self::bundleFieldsOfObject($sub_fields,$object->{$field});
                 }
@@ -38,8 +35,8 @@ class JsonHelper {
 
     public static function bundleFieldsOfArrayOfObjects(array $fields, array $objects) {
         $lightArray = array();
-        foreach($objects as $object) {
-            $lightArray[] = self::bundleFieldsOfObject($fields, $object);
+        foreach($objects as $key => $object) {
+            $lightArray[$key] = self::bundleFieldsOfObject($fields, $object);
         }
         return $lightArray;
     }
