@@ -27,26 +27,34 @@ code{background:#eee}
 .footer{font-size:0.9em;border-top:3px solid #ccc}
 .footer p{margin-top:1em}
 @media screen and (max-width:960px){.wrapper{min-width:320px;width:90%}}
-.topbar ul
+#navigation-menu
 {
     list-style-type: none;
     margin:0;
     padding:0;
 }
-.topbar li
+#navigation-menu li
 {
     display: inline;
     float:left;
 }
-.topbar ul li a
+#navigation-menu li a
 {
     display: block;
     width: 60px;
 }
-.topbar .user {
+#topbar #user {
     position: absolute;
     top: 5px;
     right: 5px;
     display: block;
     text-align: center;
+    width: 120px;
+}
+#topbar #avatar {
+    float: right;
+}
+#menu {
+    display: none;
+    clear: both;
 }
