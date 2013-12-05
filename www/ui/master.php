@@ -12,16 +12,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-route.js"></script>
     <script src="https://connect.facebook.net/en_US/all.js"></script>
-    <script src="/js/facebook.js"></script>
-    <script src="/js/controllers.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="/ui/js/facebook.js"></script>
+    <script src="/ui/js/controllers.js"></script>
+    <script src="/ui/js/app.js"></script>
     <script>
         $(function() {
             $("#menu").menu();
             $(".ui-menu").click(function(){
                 $("#menu").hide();
             });
-            $( "#name" ).click(function(){
+            $( "#avatar" ).click(function(){
                 $("#menu").toggle();
             });
         });
@@ -31,14 +31,18 @@
 <div id="topbar">
     <ul id="navigation-menu">
         <li><a href="#/">Home</a></li>
+        <li></li>
     </ul>
     <div id="user">
+        <div ng-show="user.connected" id="mywatchdogs">
+            <a href="#/">My watchdogs {{watchdogs.count | parenthesis}}</a>
+        </div>
         <div id="avatar">
             <!-- Begin Facebook -->
             <div id="fb-root"></div>
-            <div class="fb-login-button" data-max-rows="1" data-show-faces="false" ng-hide="user.connected"></div>
+            <div class="fb-login-button" data-max-rows="1" data-show-faces="false" data-scope="publish_actions"  ng-hide="user.connected"></div>
             <img ng-show="user.connected" ng-src="{{user.picture}}" />
-            <div ng-show="user.connected" id="name"><a href="#">{{user.name}}</a></div>
+            <div ng-show="user.connected" id="name">{{user.name}}</div>
             <!-- End Facebook -->
         </div>
         <ul id="menu">
@@ -55,7 +59,6 @@
 <div class="footer center">
     <p>The code of this website is licensed under the terms of the GPL v3<br/>
         Copyright &copy; 2013-2013 Undisclosed creators</p>
-
     <p><code><?php echo Base::instance()->format('Page rendered in {0} msecs / Memory usage {1}
         Kibytes',round(1e3*(microtime(TRUE)-$TIME),2),round(memory_get_usage(TRUE)/1e3,1)); ?></code></p>
 </div>

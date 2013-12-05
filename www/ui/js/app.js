@@ -12,14 +12,23 @@ myMonitor.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
             when('/', {
-                templateUrl: '/ui/partials/welcome.html',
+                templateUrl: '/ui/partials/welcome.php',
                 controller: 'MasterController'
             }).
             when('/logout', {
-                templateUrl: '/ui/partials/welcome.html',
+                templateUrl: '/ui/partials/welcome.php',
                 controller: 'LogOutController'
             }).
             otherwise({
                 redirectTo: '/'
             });
     }]);
+
+myMonitor.filter('parenthesis', function() {
+    return function(value) {
+        if (value == undefined)
+            return '';
+
+        return '(' + value + ')';
+    }
+});

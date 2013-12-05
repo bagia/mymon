@@ -16,7 +16,7 @@ class MasterController {
     }
 
     public function masterAction ($f3) {
-        echo \View::instance()->render('master.html');
+        echo \View::instance()->render('master.php');
     }
 
 }
