@@ -16,10 +16,13 @@ $f3->set('DB', new \DB\SQL (
 
 // Define the routes:
 $f3->route ("GET /", "\\Prospe\\Controller\\MasterController->masterAction");
-// We need to inject the Facebook app id from the config.ini file in the facebook.js script
+// In case we need to inject some data from the configuration in the Javascript files:
 $f3->route ("GET /ui/js/@script_name.js", "\\Prospe\\Controller\\JavascriptController->getScript");
+// Watchdog management
 $f3->route ("GET /watchdogs/list/@user_third_party_id", "\\Prospe\\Controller\\WatchdogController->watchdogsList");
 $f3->route ("GET /watchdogs/count/@user_third_party_id", "\\Prospe\\Controller\\WatchdogController->watchdogsCount");
+// Detect trafic from Facebook
+$f3->route ("GET /img/@image", "\\Prospe\\Controller\\ImageController->hit");
 
 $f3->run ();
 
