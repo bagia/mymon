@@ -22,11 +22,9 @@ class WatchdogController {
 
     public function watchdogsCount ($f3, $params) {
         $f3->set('count',
-            $this->getModel()->count(
-                array(
+            $this->getModel()->count(array(
                     "user_third_party_id=?", $params['user_third_party_id']
-                )
-            )
+                ))
         );
         echo \View::instance()->render('json/watchdogs/count.php');
     }
@@ -34,11 +32,9 @@ class WatchdogController {
     public function watchdogsList ($f3, $params) {
         //TODO: add offset?
         $f3->set('watchdogs',
-            $this->getModel()->find(
-                array(
+            $this->getModel()->find(array(
                     "user_third_party_id=?", $params['user_third_party_id']
-                )
-            )
+                ))
         );
         echo \View::instance()->render('json/watchdogs/list.php');
     }

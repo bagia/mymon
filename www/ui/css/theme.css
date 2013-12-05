@@ -185,3 +185,11 @@ code {
     clear: both;
     width: 120px;
 }
+
+#accordion {
+    font-size: 10px;
+}
+
+#accordion div {
+    height: 300px;
+}

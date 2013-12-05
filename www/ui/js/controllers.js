@@ -56,7 +56,9 @@ function WelcomeController() {
 
 function WatchdogsController($scope, $rootScope, $http, FB) {
     if ($rootScope.user.connected) {
-        $http.get('/watchdogs/list/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token)
+        var query = '/watchdogs/list/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token;
+        console.log(query);
+        $http.get(query)
             .success(function (response) {
                 $scope.watchdogs = response;
             });
