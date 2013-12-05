@@ -190,6 +190,11 @@ code {
     font-size: 10px;
 }
 
-#accordion div {
-    height: 300px;
+#accordion .watchdog-detail {
+    height: 200px;
+}
+
+#accordion .watchdog-detail .history {
+    height: 100px;
+    overflow-y: scroll;
 }

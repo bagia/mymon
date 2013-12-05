@@ -5,6 +5,11 @@ MasterController.resolve = {
     user: function ($rootScope, $http, $rootScope, $q) {
         var deferred = $q.defer();
 
+        if ($rootScope.user.connected) {
+            deferred.resolve($rootScope.user);
+            return deferred.promise;
+        }
+
         // Set User as not connected
         $rootScope.user = {
             connected: false,
