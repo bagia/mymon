@@ -5,7 +5,7 @@ MasterController.resolve = {
     user: function ($rootScope, $http, $rootScope, $q) {
         var deferred = $q.defer();
 
-        if ($rootScope.user.connected) {
+        if ($rootScope.user != undefined && $rootScope.user.connected) {
             deferred.resolve($rootScope.user);
             return deferred.promise;
         }

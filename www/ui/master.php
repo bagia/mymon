@@ -58,7 +58,7 @@
 
 <div class="footer center">
     <p>The code of this website is licensed under the terms of the GPL v3<br/>
-        Copyright &copy; 2013-2013 Undisclosed creators</p>
+        Copyright &copy; 2013-2014 Undisclosed creators</p>
 </div>
 </body>
 </html>
