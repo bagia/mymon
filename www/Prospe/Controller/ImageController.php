@@ -28,6 +28,18 @@ class ImageController {
             $history->watchdog = $watchdog->id;
             $history->user_agent = $f3->get('SERVER.HTTP_USER_AGENT');
             $history->save();
+
+            if (!empty($watchdog->notify_user)) {
+                $facebook = \Prospe\Helper\FacebookHelper::getFacebook();
+                $facebook->api( "/{$watchdog->notify_user}/notifications",
+                    "POST",
+                    array (
+                        'access_token' => $facebook->getApplicationAccessToken(),
+                        'template' => "Watchdog \"{$watchdog->name}\" was triggered by a visit.",
+                        'href' => '/#/watchdogs'
+                    )
+                );
+            }
         }
 
         $f3->error(404);

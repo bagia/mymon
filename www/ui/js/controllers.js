@@ -32,6 +32,7 @@ MasterController.resolve = {
 
                     $rootScope.user.name = response.name;
                     $rootScope.user.third_party_id = response.third_party_id;
+                    console.log(response);
 
                     // Get the profile picture
                     FB.api("/me/picture?width=50&height=50", function (response) {
