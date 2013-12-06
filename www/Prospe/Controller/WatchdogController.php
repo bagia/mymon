@@ -45,7 +45,7 @@ class WatchdogController {
         $watchdog->user_third_party_id = $params['user_third_party_id'];
         $watchdog->name = htmlentities($f3->get('POST.name'));
         $notify_user = htmlentities($f3->get('POST.notify_user'));
-        if (!empty($notifications)) {
+        if (!empty($notify_user)) {
             $watchdog->notify_user = $notify_user;
         }
         $watchdog->save();
