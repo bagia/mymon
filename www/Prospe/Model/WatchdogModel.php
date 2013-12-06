@@ -23,6 +23,11 @@ class WatchdogModel extends \DB\SQL\Mapper {
         return parent::__get($key);
     }
 
+    public function generateRandomImageName() {
+        $random = md5(uniqid('mymon', TRUE));
+        $this->image = "{$random}.png";
+    }
+
     public function getHistoryModel() {
         return new \Prospe\Model\HistoryModel();
     }

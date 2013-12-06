@@ -6,6 +6,34 @@ body {
     margin: 2em auto
 }
 
+label {
+    font-family: Ubuntu, sans-serif;
+    color: #333;
+    display: block;
+}
+
+input[type=text] {
+    margin: 10px;
+    width: 640px;
+    font-family: Ubuntu, sans-serif;
+    color: #333;
+}
+
+#submit_button_placeholder {
+    text-align: center;
+}
+
+.radio_buttons * {
+    margin-left: 5px;
+    margin-right: 5px;
+    float: left !important;
+}
+
+button {
+    font-family: Ubuntu, sans-serif;
+    color: #333;
+}
+
 div.content {
     padding: 10px;
 }
@@ -153,11 +181,12 @@ code {
 #navigation-menu li {
     display: inline;
     float: left;
+    padding: 5px;
 }
 
 #navigation-menu li a {
     display: block;
-    width: 60px;
+    max-width: 120px;
 }
 
 #topbar #user {
@@ -197,4 +226,9 @@ code {
 #accordion .watchdog-detail .history {
     height: 150px;
     overflow-y: scroll;
+}
+
+#progressbar {
+    height: 15px;
+    margin: 5px;
 }

@@ -1,5 +1,6 @@
 <div class="content">
     <h3>My watchdogs</h3>
+    <a href="/#/new">new</a>
     <div id="accordion">
             <h3 ng-repeat-start="watchdog in watchdogs" accordion-directive>#{{$index+1}} {{watchdog.name}}</h3>
             <div class="watchdog-detail" ng-repeat-end>

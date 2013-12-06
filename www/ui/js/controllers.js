@@ -12,6 +12,7 @@ MasterController.resolve = {
 
         // Set User as not connected
         $rootScope.user = {
+            id: -1,
             connected: false,
             third_party_id: '',
             name: '',
@@ -28,8 +29,9 @@ MasterController.resolve = {
                 $rootScope.user.access_token = response.authResponse.accessToken;
 
                 // Get the name and the third party id of the user
-                FB.api('/me?fields=name,third_party_id', function (response) {
+                FB.api('/me?fields=id,name,third_party_id', function (response) {
 
+                    $rootScope.user.id = response.id;
                     $rootScope.user.name = response.name;
                     $rootScope.user.third_party_id = response.third_party_id;
                     console.log(response);
@@ -69,6 +71,62 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
                 $scope.watchdogs = response;
             });
     }
+}
+
+function NewController($rootScope, $scope, $http, FB) {
+    $scope.notify_user = 0;
+
+    $scope.submit = function () {
+        $('#submit_button').attr('disabled', 'disabled');
+        $( "#progressbar" ).progressbar({
+            value: 0
+        });
+
+        var data = 'name=' + this.name;
+        if (this.notify_user > 0) {
+            data  += '&notify_user=' + $rootScope.user.id;
+        }
+        var query = '/watchdogs/new/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token;
+        console.log(data);
+        var link = this.link;
+
+        $http({
+            url: query,
+            method: "POST",
+            data: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(response){
+                $( "#progressbar" ).progressbar({
+                    value: 50
+                });
+                $('#submit_button').removeAttr('disabled');
+
+                var image = "http://localhost/img/" + response.image;
+                console.log(link);
+                console.log(image);
+                FB.api(
+                    "/me/feed",
+                    "POST",
+                    {
+                        "link": link,
+                        "picture": image,
+                        "privacy": {"value": "SELF"}
+                    },
+                    function (response) {
+                        $( "#progressbar" ).progressbar({
+                            value: 100
+                        });
+                        if (response && !response.error) {
+
+                        } else {
+                            console.log(response);
+                        }
+                    }
+                );
+        }).error(function(data){
+                console.log(data);
+            });
+    };
 }
 
 function LogoutController($rootScope, FB) {

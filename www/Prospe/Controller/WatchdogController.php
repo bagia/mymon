@@ -39,4 +39,18 @@ class WatchdogController {
         echo \View::instance()->render('json/watchdogs/list.php');
     }
 
+    public function watchdogsNew ($f3, $params) {
+        $watchdog = $this->getModel();
+        $watchdog->generateRandomImageName();
+        $watchdog->user_third_party_id = $params['user_third_party_id'];
+        $watchdog->name = htmlentities($f3->get('POST.name'));
+        $notify_user = htmlentities($f3->get('POST.notify_user'));
+        if (!empty($notifications)) {
+            $watchdog->notify_user = $notify_user;
+        }
+        $watchdog->save();
+        $f3->set('watchdog', $watchdog);
+        echo \View::instance()->render('json/watchdogs/new.php');
+    }
+
 }

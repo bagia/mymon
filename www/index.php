@@ -21,6 +21,7 @@ $f3->route ("GET /ui/js/@script_name.js", "\\Prospe\\Controller\\JavascriptContr
 // Watchdog management
 $f3->route ("GET /watchdogs/list/@user_third_party_id", "\\Prospe\\Controller\\WatchdogController->watchdogsList");
 $f3->route ("GET /watchdogs/count/@user_third_party_id", "\\Prospe\\Controller\\WatchdogController->watchdogsCount");
+$f3->route ("POST /watchdogs/new/@user_third_party_id", "\\Prospe\\Controller\\WatchdogController->watchdogsNew");
 // Detect trafic from Facebook
 $f3->route ("GET /img/@image", "\\Prospe\\Controller\\ImageController->hit");
 
