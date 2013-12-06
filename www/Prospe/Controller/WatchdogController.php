@@ -8,12 +8,9 @@ namespace Prospe\Controller;
 class WatchdogController extends BaseController {
 
     public function beforeRoute ($f3, $params) {
+        parent::beforeRoute($f3, $params);
         // Check if the user is allowed to access this page
         \Prospe\Helper\FacebookHelper::checkUser($f3->get('GET.access_token'), $params['user_third_party_id']);
-    }
-
-    public function afterRoute ($f3) {
-
     }
 
     protected function getModel() {
