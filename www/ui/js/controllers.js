@@ -117,7 +117,7 @@ function NewController($rootScope, $scope, $http, FB) {
                 });
                 $('#submit_button').removeAttr('disabled');
 
-                var image = "<?php echo $SCHEME.'://'.$HOST.':'.$PORT.$BASE.'/'; ?>/img/" + response.image;
+                var image = window.location.origin + "/img/" + response.image;
                 console.log(link);
                 console.log(image);
                 FB.api(
