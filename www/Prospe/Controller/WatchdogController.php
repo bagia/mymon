@@ -53,4 +53,14 @@ class WatchdogController {
         echo \View::instance()->render('json/watchdogs/new.php');
     }
 
+    public function watchdogsDelete ($f3, $params) {
+        $status = $this->getModel()->erase(array(
+            'id=?', $params['watchdog_id'],
+            'user_third_party_id=?', $params['user_third_party_id']
+        ));
+        $f3->set('status', $status);
+        echo \View::instance()->render('json/watchdogs/delete.php');
+
+    }
+
 }

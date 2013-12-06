@@ -224,8 +224,22 @@ code {
 }
 
 #accordion .watchdog-detail .history {
-    height: 150px;
+    height: 120px;
     overflow-y: scroll;
+    margin: 5px;
+}
+
+#accordion .watchdog-detail .history-count {
+    float: left;
+}
+
+#accordion .watchdog-detail .delete-link {
+     float: right;
+ }
+
+#accordion .watchdog-detail .delete-link a {
+    color: rgb(102, 102, 255);
+    cursor: pointer;
 }
 
 #progressbar {

@@ -63,6 +63,22 @@ function WelcomeController() {
 }
 
 function WatchdogsController($scope, $rootScope, $http, FB) {
+    $scope.delete = function(id) {
+        var query = '/watchdogs/delete/' + $rootScope.user.third_party_id + '/' + id + '?access_token=' + $rootScope.user.access_token;
+        console.log(query);
+        $http.get(query)
+            .success(function (response) {
+                console.log(response);
+                if (response.data > 0) {
+                    $('#wd-' + id).prev().fadeOut();
+                    $('#wd-' + id).fadeOut();
+                    $rootScope.watchdogs_count--;
+                } else {
+                    alert('Failed to delete.');
+                }
+            });
+    }
+
     if ($rootScope.user.connected) {
         var query = '/watchdogs/list/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token;
         console.log(query);
@@ -116,6 +132,10 @@ function NewController($rootScope, $scope, $http, FB) {
                         $( "#progressbar" ).progressbar({
                             value: 100
                         });
+                        $rootScope.$apply(function(){
+                            $rootScope.watchdogs_count++;
+                        });
+
                         if (response && !response.error) {
 
                         } else {
