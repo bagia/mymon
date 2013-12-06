@@ -20,6 +20,11 @@ myMonitor.config(['$routeProvider',
                 controller: WatchdogsController,
                 resolve: MasterController.resolve
             }).
+            when('/privacy', {
+                templateUrl: '/ui/partials/privacy.php',
+                controller: PrivacyController,
+                resolve: MasterController.resolve
+            }).
             when('/logout', {
                 templateUrl: '/ui/partials/welcome.php',
                 controller: LogoutController

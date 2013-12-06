@@ -79,3 +79,6 @@ function LogoutController($rootScope, FB) {
         });
     });
 }
+
+function PrivacyController() {
+}

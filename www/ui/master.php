@@ -31,7 +31,7 @@
 <div id="topbar">
     <ul id="navigation-menu">
         <li><a href="#/">Home</a></li>
-        <li></li>
+        <li><a href="#/privacy">Privacy policy</a></li>
     </ul>
     <div id="user">
         <div ng-show="user.connected" id="mywatchdogs">
