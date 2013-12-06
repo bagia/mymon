@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content documentation">
     <h3>Privacy policy</h3>
     <h4>Information we receive and use</h4>
     <p>The Facebook authentication is done directly on Facebook, not on our site.
