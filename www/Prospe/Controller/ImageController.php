@@ -23,9 +23,25 @@ class ImageController {
 
         if ($watchdog) {
             // The image belongs to a genuine watchdog.
+
+            $now = new \DateTime();
+            $now->setTimezone(new \DateTimeZone('UTC'));
+
+            // We need to check whether there already is a history
+            // entry that is less than 2 seconds old.
+            if (count($watchdog->history) > 0) {
+                $last = new \DateTime($watchdog->history[0]->date);
+                if ($now->diff($last)->s <= 2) {
+                    $f3->error(403);
+                    return;
+                }
+            }
+
+
             // Let's add a history entry.
             $history = new \Prospe\Model\HistoryModel();
             $history->watchdog = $watchdog->id;
+            $history->date = $now->date;
             $history->user_agent = $f3->get('SERVER.HTTP_USER_AGENT');
             $history->save();
 
