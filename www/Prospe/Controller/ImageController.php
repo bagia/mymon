@@ -38,7 +38,7 @@ class ImageController {
             // Let's add a history entry.
             $history = new \Prospe\Model\HistoryModel();
             $history->watchdog = $watchdog->id;
-            $history->date = $now->date;
+            $history->date = $now->format('Y-m-d H:i:s');
             $history->user_agent = $f3->get('SERVER.HTTP_USER_AGENT');
             $history->save();
 
