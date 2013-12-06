@@ -5,15 +5,7 @@
 
 namespace Prospe\Controller;
 
-class JavascriptController {
-    public function beforeRoute($f3) {
-
-    }
-
-    public function afterRoute($f3) {
-
-    }
-
+class JavascriptController extends BaseController {
     public function getScript($f3, $params) {
         $script_file = "/js/{$params['script_name']}.js";
         if (!file_exists($f3->get('UI') . $script_file)) {

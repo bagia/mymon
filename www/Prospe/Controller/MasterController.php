@@ -5,16 +5,7 @@
 
 namespace Prospe\Controller;
 
-class MasterController {
-
-    public function beforeRoute ($f3) {
-
-    }
-
-    public function afterRoute ($f3) {
-
-    }
-
+class MasterController extends BaseController {
     public function masterAction ($f3) {
         echo \View::instance()->render('master.php');
     }

@@ -5,7 +5,7 @@
 
 namespace Prospe\Controller;
 
-class WatchdogController {
+class WatchdogController extends BaseController {
 
     public function beforeRoute ($f3, $params) {
         // Check if the user is allowed to access this page

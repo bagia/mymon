@@ -5,13 +5,9 @@
 
 namespace Prospe\Controller;
 
-class ImageController {
-    public function beforeRoute($f3) {
-
-    }
-
-    public function afterRoute($f3) {
-
+class ImageController extends BaseController {
+    public function beforeRoute($f3, $params) {
+        // Do not require authentication
     }
 
     public function hit($f3, $params) {
