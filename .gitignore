@@ -1,0 +1,5 @@
+# PHPStorm IDE
+.idea/
+
+# Protect the configuration file
+config.ini
