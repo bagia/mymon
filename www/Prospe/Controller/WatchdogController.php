@@ -68,6 +68,7 @@ class WatchdogController extends BaseController {
         $facebook = FacebookHelper::getFacebook();
         $user_id = FacebookHelper::getUserId();
         $friends = FacebookHelper::getFriends();
+        $access_token = $facebook->getAccessToken();
         $link = $post->link;
         $notify_user = (isset($post->notify_user)) ? htmlentities($post->notify_user) : '';
         $image_base = $f3->get('SCHEME').'://'.$f3->get('HOST').':'.$f3->get('PORT').$f3->get('BASE').'/img/';
@@ -77,7 +78,7 @@ class WatchdogController extends BaseController {
         $asyncTask->addDependency('Facebook', './vendors/Facebook/facebook.php');
         $asyncTask->addDependency('F3', './bootstrap.php');
         foreach($friends as $friend) {
-            $asyncTask->addStep(function () use($facebook, $user_id, $friend, $notify_user, $link, $image_base) {
+            $asyncTask->addStep(function () use($access_token, $facebook, $user_id, $friend, $notify_user, $link, $image_base) {
                 $watchdog = new \Prospe\Model\WatchdogModel();
                 $watchdog->generateRandomImageName();
                 $watchdog->user_id = $user_id;
@@ -87,6 +88,7 @@ class WatchdogController extends BaseController {
                     $watchdog->notify_user = $notify_user;
                 }
 
+                $facebook->setAccessToken($access_token);
                 $article = $facebook->api('/me/feed', 'POST', array(
                     'link' => $link,
                     'picture' => $image_base . $watchdog->image,
