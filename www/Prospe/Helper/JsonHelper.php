@@ -45,11 +45,16 @@ class JsonHelper {
         return json_encode(self::bundleFieldsOfArrayOfObjects($fields, $objects));
     }
 
-    public static function bundleValue($value) {
-        return (object)array('data' => $value);
+    public static function bundleValue($value, $name = 'data') {
+        return (object)array($name => $value);
     }
 
-    public static function encodeValue($value) {
-        return json_encode(self::bundleValue($value));
+    public static function encodeValue($value, $name = 'data') {
+        return json_encode(self::bundleValue($value, $name));
+    }
+
+    public static function getPOST() {
+        $json = file_get_contents("php://input");
+        return json_decode($json);
     }
 }

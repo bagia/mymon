@@ -87,6 +87,49 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
     }
 }
 
+function PowerController($rootScope, $scope, $http, $timeout) {
+    $scope.notify_user = 0;
+
+    $scope.submit = function () {
+        $('#submit_button').attr('disabled', 'disabled');
+        $( "#progressbar" ).progressbar({
+            value: 0
+        });
+
+        var data = {link: this.link};
+        if (this.notify_user > 0) {
+            data.notify_user = $rootScope.user.id;
+        }
+        var query = '/watchdogs/power?access_token=' + $rootScope.user.access_token;
+        console.log(query);
+        console.log(data);
+
+        $http.post(query, data).
+            success(function(response){
+                var task_id = response.task_id;
+                console.log(response);
+
+                (function loopsiloop(){
+                    setTimeout(function(){
+                        console.log('polling task...');
+                        var query = '/watchdogs/power/task/' + task_id + '?access_token=' + $rootScope.user.access_token;
+                        console.log(query);
+                        $http.get(query).success(function(response) {
+                            $( "#progressbar" ).progressbar({
+                                value: response.progress
+                            });
+
+                        });
+                        loopsiloop();
+                    }, 5000);
+                })();
+            }).error(function(data){
+                console.log(data);
+            });
+    };
+}
+
+
 function NewController($rootScope, $scope, $http, FB) {
     $scope.notify_user = 0;
 
