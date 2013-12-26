@@ -29,8 +29,7 @@ class TestController extends BaseController {
         }
 
         $asyncTask = new \AsyncTask();
-        $asyncTask->addDependency('Facebook', './vendors/Facebook/facebook.php');
-        $asyncTask->addDependency('Base', './bootstrap.php');
+
         $stop = 10;
 
         // create the fields in the db while in context
@@ -41,28 +40,16 @@ class TestController extends BaseController {
 
             $stop--;
 
-            $asyncTask->addStep(function () use($facebook, $friend) {
-//                $facebook->api('/me/feed', 'POST', array(
-//                    'link' => 'http://www.nytimes.com/2013/12/27/world/europe/turkey-corruption-scandal.html?hp',
-//                    'picture' => 'http://www.example.com/',
-//                    'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
-//                ));
-                $watchdog = new \Prospe\Model\WatchdogModel();
-                $watchdog->name = $friend['name'];
-                $watchdog->generateRandomImageName();
-                $watchdog->user_id = 0;
-                $watchdog->save();
+            $asyncTask->addStep(function () {
+                sleep(1);
+                echo "Hello world";
             });
         }
         // To avoid noise, let's show an image to everyone
-        $asyncTask->addStep(function () use($facebook, $friend) {
-//            $facebook->api('/me/feed', 'POST', array(
-//                'link' => 'http://www.nytimes.com/2013/12/27/world/europe/turkey-corruption-scandal.html?hp',
-//                'privacy' => json_encode(array('value' => 'ALL_FRIENDS'))
-//            ));
-
+        $asyncTask->addStep(function () {
+            sleep(30);
         });
-        $asyncTask->autoDelete();
+        //$asyncTask->autoDelete();
         echo $asyncTask->start();
     }
 

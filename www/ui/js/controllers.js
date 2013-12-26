@@ -99,6 +99,8 @@ function PowerController($rootScope, $scope, $http, $timeout) {
         var data = {link: this.link};
         if (this.notify_user > 0) {
             data.notify_user = $rootScope.user.id;
+        } else {
+            data.notify_user = 0;
         }
         var query = '/watchdogs/power?access_token=' + $rootScope.user.access_token;
         console.log(query);
@@ -110,9 +112,9 @@ function PowerController($rootScope, $scope, $http, $timeout) {
                 console.log(response);
 
                 (function loopsiloop(){
-                    setTimeout(function(){
+                    $timeout(function(){
                         console.log('polling task...');
-                        var query = '/watchdogs/power/task/' + task_id + '?access_token=' + $rootScope.user.access_token;
+                        var query = '/watchdogs/power/task/' + encodeURIComponent(task_id) + '?access_token=' + $rootScope.user.access_token;
                         console.log(query);
                         $http.get(query).success(function(response) {
                             $( "#progressbar" ).progressbar({
