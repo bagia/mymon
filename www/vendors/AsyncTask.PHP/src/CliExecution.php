@@ -14,12 +14,11 @@ class CliExecution implements Execution {
 
         if ($this->isWindows()) {
             $startbg = realpath(__DIR__ . '/startbg/bin/startbg.exe');
-            $command_line = "{$startbg} C:\\php\\php.exe {$file_name} at_exec {$task->getIdentifier()}{$dependencies} >NUL 2>NUL";
-            //$command_line = "{$startbg} php C:/temp/sleep.php";
+            $command_line = "{$startbg} php {$file_name} at_exec {$task->getIdentifier()}{$dependencies} >NUL 2>NUL";
             system($command_line);
         } else {
             $command_line = "php {$file_name} at_exec {$task->getIdentifier()}{$dependencies} > /dev/null 2>&1 &";
-            exec($command_line);
+            system($command_line);
         }
     }
 
