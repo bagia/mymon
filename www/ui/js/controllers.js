@@ -14,7 +14,6 @@ MasterController.resolve = {
         $rootScope.user = {
             id: -1,
             connected: false,
-            third_party_id: '',
             name: '',
             picture: '',
             access_token: ''
@@ -29,11 +28,10 @@ MasterController.resolve = {
                 $rootScope.user.access_token = response.authResponse.accessToken;
 
                 // Get the name and the third party id of the user
-                FB.api('/me?fields=id,name,third_party_id', function (response) {
+                FB.api('/me?fields=id,name', function (response) {
 
                     $rootScope.user.id = response.id;
                     $rootScope.user.name = response.name;
-                    $rootScope.user.third_party_id = response.third_party_id;
                     console.log(response);
 
                     // Get the profile picture
@@ -41,7 +39,7 @@ MasterController.resolve = {
                         $rootScope.user.picture = response.data.url;
 
                         // Get count of watchdogs
-                        $http.get('/watchdogs/count/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token)
+                        $http.get('/watchdogs/count?access_token=' + $rootScope.user.access_token)
                             .success(function (response) {
                                 $rootScope.watchdogs_count = response.data;
                                 deferred.resolve($rootScope.user);
@@ -64,9 +62,9 @@ function WelcomeController() {
 
 function WatchdogsController($scope, $rootScope, $http, FB) {
     $scope.delete = function(id) {
-        var query = '/watchdogs/delete/' + $rootScope.user.third_party_id + '/' + id + '?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs/' + id + '?access_token=' + $rootScope.user.access_token;
         console.log(query);
-        $http.get(query)
+        $http.delete(query)
             .success(function (response) {
                 console.log(response);
                 if (response.data > 0) {
@@ -80,7 +78,7 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
     }
 
     if ($rootScope.user.connected) {
-        var query = '/watchdogs/list/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs/list?access_token=' + $rootScope.user.access_token;
         console.log(query);
         $http.get(query)
             .success(function (response) {
@@ -102,7 +100,7 @@ function NewController($rootScope, $scope, $http, FB) {
         if (this.notify_user > 0) {
             data  += '&notify_user=' + $rootScope.user.id;
         }
-        var query = '/watchdogs/new/' + $rootScope.user.third_party_id + '?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs?access_token=' + $rootScope.user.access_token;
         console.log(data);
         var link = this.link;
 

@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `watchdog`;
 CREATE TABLE IF NOT EXISTS `watchdog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_third_party_id` varchar(255) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `notify_user` varchar(255) DEFAULT NULL,
