@@ -68,6 +68,7 @@ class WatchdogController extends BaseController {
         $facebook = FacebookHelper::getFacebook();
         $user_id = FacebookHelper::getUserId();
         $friends = FacebookHelper::getFriends();
+        $facebook->setExtendedAccessToken();
         $access_token = $facebook->getAccessToken();
         $link = $post->link;
         $notify_user = (isset($post->notify_user)) ? htmlentities($post->notify_user) : '';
