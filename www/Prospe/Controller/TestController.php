@@ -20,8 +20,14 @@ class TestController extends BaseController {
         $friends = $facebook->api('/me/friends');
 
         foreach($friends['data'] as $friend) {
-
-
+//            $watchdog = new \Prospe\Model\WatchdogModel();
+//            $watchdogs = $watchdog->find(array(
+//                "user_id=? and name=?", FacebookHelper::getUserId(), htmlentities($friend['name'])
+//            ));
+//            if (count($watchdogs) > 0) {
+//                $watchdogs[0]->friend_id = $friend['id'];
+//                $watchdogs[0]->save();
+//            }
         }
     }
 

@@ -105,6 +105,7 @@ class WatchdogController extends BaseController {
                     'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
                 ));
 
+                $watchdog->friend_id = $friend['id'];
                 $watchdog->fb_article = $article['id'];
                 $watchdog->save();
 
