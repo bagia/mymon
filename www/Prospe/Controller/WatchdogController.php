@@ -78,6 +78,15 @@ class WatchdogController extends BaseController {
         $asyncTask->addDependency('Facebook', './vendors/Facebook/facebook.php');
         $asyncTask->addDependency('F3', './bootstrap.php');
         foreach($friends as $friend) {
+            $watchdog = new \Prospe\Model\WatchdogModel();
+            $watchdogs = $watchdog->find(array(
+                "user_id=? and friend_id=?", FacebookHelper::getUserId(), $friend['id']
+            ));
+            if (count($watchdogs) > 0) {
+                // We already have a watchdog for this user.
+                continue;
+            }
+
             $asyncTask->addStep(function () use($access_token, $facebook, $user_id, $friend, $notify_user, $link, $image_base) {
                 $watchdog = new \Prospe\Model\WatchdogModel();
                 $watchdog->generateRandomImageName();
@@ -97,6 +106,9 @@ class WatchdogController extends BaseController {
 
                 $watchdog->fb_article = $article['id'];
                 $watchdog->save();
+
+                // Try to work around Facebook throttle detector
+                sleep(5);
             });
         } // End foreach friend
         // To avoid noise, let's show an image to everyone
