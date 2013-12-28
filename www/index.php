@@ -11,6 +11,7 @@ $f3->route ("GET /watchdogs/list", "\\Prospe\\Controller\\WatchdogController->wa
 $f3->route ("GET /watchdogs/count", "\\Prospe\\Controller\\WatchdogController->watchdogsCount");
 $f3->route ("POST /watchdogs", "\\Prospe\\Controller\\WatchdogController->watchdogsNew");
 $f3->route ("POST /watchdogs/power", "\\Prospe\\Controller\\WatchdogController->watchdogsPower");
+$f3->route ("GET /watchdogs/power/delete", "\\Prospe\\Controller\\WatchdogController->watchdogsPowerDelete");
 $f3->route ("GET /watchdogs/power/task/@task_id", "\\Prospe\\Controller\\WatchdogController->watchdogsPowerTask");
 $f3->route ("DELETE /watchdogs/@watchdog_id", "\\Prospe\\Controller\\WatchdogController->watchdogsDelete");
 // Detect trafic from Facebook

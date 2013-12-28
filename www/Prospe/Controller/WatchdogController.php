@@ -146,4 +146,33 @@ class WatchdogController extends BaseController {
         echo \View::instance()->render('json/watchdogs/power_task.php');
     }
 
+    public function watchdogsPowerDelete($f3, $params) {
+        $user_id = FacebookHelper::getUserId();
+        $facebook = FacebookHelper::getFacebook();
+        $facebook->setExtendedAccessToken();
+        $access_token = $facebook->getAccessToken();
+        $watchdog = $this->getModel();
+        $watchdogs = $watchdog->find(array(
+            "user_id=? and friend_id IS NOT NULL", FacebookHelper::getUserId()
+        ));
+
+        require_once('./vendors/AsyncTask.PHP/src/bootstrap.php');
+        $asyncTask = new \AsyncTask();
+        $asyncTask->addDependency('Facebook', './vendors/Facebook/facebook.php');
+        $asyncTask->addDependency('F3', './bootstrap.php');
+
+        foreach($watchdogs as $watchdog) {
+            $asyncTask->addStep(function () use ($facebook, $access_token, $watchdog) {
+                $facebook->setAccessToken($access_token);
+                $friend_id = $watchdog->friend_id;
+                $article = $watchdog->fb_article;
+
+                $facebook->api("/{$article}", 'DELETE');
+            });
+        }
+
+        $asyncTask->autoDelete();
+        echo $asyncTask->start();
+    }
+
 }
