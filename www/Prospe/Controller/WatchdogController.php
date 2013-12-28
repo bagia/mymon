@@ -162,12 +162,17 @@ class WatchdogController extends BaseController {
         $asyncTask->addDependency('F3', './bootstrap.php');
 
         foreach($watchdogs as $watchdog) {
-            $asyncTask->addStep(function () use ($facebook, $access_token, $watchdog) {
+            $watchdog_id = $watchdog->id;
+            $asyncTask->addStep(function () use ($facebook, $access_token, $watchdog_id) {
+                $watchdog = new \Prospe\Model\WatchdogModel();
+                $watchdog->load(array('id=?', $watchdog_id));
                 $facebook->setAccessToken($access_token);
-                $friend_id = $watchdog->friend_id;
                 $article = $watchdog->fb_article;
+                $response = $facebook->api("/{$article}", 'DELETE');
+                if (!isset($response['error'])) {
+                    $watchdog->erase();
+                }
 
-                $facebook->api("/{$article}", 'DELETE');
             });
         }
 
