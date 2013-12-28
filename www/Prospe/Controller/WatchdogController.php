@@ -177,7 +177,9 @@ class WatchdogController extends BaseController {
         }
 
         $asyncTask->autoDelete();
-        echo $asyncTask->start();
+        $task_id = $asyncTask->start();
+        $f3->set('task_id', $task_id);
+        echo \View::instance()->render('json/watchdogs/power.php');
     }
 
 }
