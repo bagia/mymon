@@ -81,7 +81,7 @@ class WatchdogController extends BaseController {
         $asyncTask = new \AsyncTask();
         $asyncTask->addDependency('Facebook', './vendors/Facebook/facebook.php');
         $asyncTask->addDependency('F3', './bootstrap.php');
-        $index = -1;
+        $index = 0;
         foreach($friends as $friend) {
             $index++;
 
