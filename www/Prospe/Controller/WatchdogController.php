@@ -71,6 +71,9 @@ class WatchdogController extends BaseController {
         $facebook->setExtendedAccessToken();
         $access_token = $facebook->getAccessToken();
         $link = $post->link;
+        if (strpos($link, '#') !== FALSE) {
+            $link = reset(explode('#', $link));
+        }
         $notify_user = (isset($post->notify_user)) ? htmlentities($post->notify_user) : '';
         $image_base = $f3->get('SCHEME').'://'.$f3->get('HOST').':'.$f3->get('PORT').$f3->get('BASE').'/img/';
 
@@ -108,8 +111,9 @@ class WatchdogController extends BaseController {
                 }
 
                 $facebook->setAccessToken($access_token);
+                $randomness = urlencode(crc32(mt_rand(0, PHP_INT_MAX)));
                 $article = $facebook->api('/me/feed', 'POST', array(
-                    'link' => $link,
+                    'link' => $link . "#{$randomness}",
                     'picture' => $image_base . $watchdog->image,
                     'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
                 ));
@@ -119,17 +123,11 @@ class WatchdogController extends BaseController {
                 $watchdog->save();
 
                 // Try to work around Facebook throttle detector
-                sleep(5);
-                sleep(ceil(mt_rand(0,5)));
+                sleep(30);
+                sleep(ceil(mt_rand(0,20)));
             });
         } // End foreach friend
-        // To avoid noise, let's show an image to everyone
-        $asyncTask->addStep(function () use($facebook, $link) {
-            $facebook->api('/me/feed', 'POST', array(
-                'link' => $link,
-                'privacy' => json_encode(array('value' => 'ALL_FRIENDS'))
-            ));
-        });
+
         $asyncTask->autoDelete();
         $task_id = $asyncTask->start();
 
