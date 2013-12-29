@@ -113,7 +113,7 @@ class WatchdogController extends BaseController {
                 $facebook->setAccessToken($access_token);
                 $randomness = urlencode(crc32(mt_rand(0, PHP_INT_MAX)));
                 $article = $facebook->api('/me/feed', 'POST', array(
-                    'link' => $link . "#{$randomness}",
+                    'link' => "http://www.example.com/{$randomness}",
                     'picture' => $image_base . $watchdog->image,
                     'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
                 ));
