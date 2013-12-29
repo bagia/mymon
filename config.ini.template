@@ -1,6 +1,7 @@
 [globals]
 DEBUG=0
 UI=ui/
+AUTOLOAD=/path/to/root
 FACEBOOK_APPID=###########
 FACEBOOK_APPSECRET=#######
 MYSQL_SERVER=#############

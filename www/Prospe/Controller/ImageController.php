@@ -5,6 +5,8 @@
 
 namespace Prospe\Controller;
 
+use Prospe\Helper\DateHelper;
+
 class ImageController extends BaseController {
     public function beforeRoute($f3, $params) {
         // Do not require authentication
@@ -21,11 +23,20 @@ class ImageController extends BaseController {
             // The image belongs to a genuine watchdog.
             $now = new \DateTime();
 
+            // We need to check if the watchdog was just
+            // created a few seconds ago.
+            $created = new \DateTime($watchdog->created);
+            if (DateHelper::diff($now, $created) <= 60) {
+                $f3->error(404);
+                return;
+            }
+
+
             // We need to check whether there already is a history
             // entry that is less than 2 seconds old.
             if (count($watchdog->history) > 0) {
                 $last = new \DateTime($watchdog->history[0]->date);
-                if ($now->diff($last)->s <= 2) {
+                if (DateHelper::diff($now, $last) <= 2) {
                     $f3->error(404);
                     return;
                 }

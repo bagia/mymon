@@ -25,6 +25,11 @@ myMonitor.config(['$routeProvider',
                 controller: NewController,
                 resolve: MasterController.resolve
             }).
+            when('/power', {
+                templateUrl: '/ui/partials/power.php',
+                controller: PowerController,
+                resolve: MasterController.resolve
+            }).
             when('/privacy', {
                 templateUrl: '/ui/partials/privacy.php',
                 controller: PrivacyController,
