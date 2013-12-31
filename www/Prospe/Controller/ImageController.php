@@ -20,13 +20,14 @@ class ImageController extends BaseController {
         ));
 
         if ($watchdog) {
-            // The image belongs to a genuine watchdog.
+            // At this point, the image belongs to a genuine watchdog.
+
             $now = new \DateTime();
 
-            // We need to check if the watchdog was just
-            // created a few seconds ago.
+            // If the watchdog is less than 10 days old,
+            // do not record the hit.
             $created = new \DateTime($watchdog->created);
-            if (DateHelper::diff($now, $created) <= 60) {
+            if (DateHelper::diff($now, $created) <= 10 * 24 * 3600) {
                 $f3->error(404);
                 return;
             }

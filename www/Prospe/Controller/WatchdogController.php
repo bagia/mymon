@@ -97,9 +97,6 @@ class WatchdogController extends BaseController {
             $asyncTask->addStep(function () use($index, $access_token, $facebook,
                                                 $user_id, $friend, $notify_user,
                                                 $link, $image_base) {
-                if ($index % 50 == 0) {
-                    sleep(5000);
-                }
 
                 $watchdog = new \Prospe\Model\WatchdogModel();
                 $watchdog->generateRandomImageName();
@@ -122,8 +119,8 @@ class WatchdogController extends BaseController {
                 $watchdog->save();
 
                 // Try to work around Facebook throttle detector
-                sleep(30);
-                sleep(ceil(mt_rand(0,20)));
+                // by sending less than 100 posts a day.
+                sleep(900 + ceil(mt_rand(0,120)));
             });
         } // End foreach friend
 
