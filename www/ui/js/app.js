@@ -17,6 +17,11 @@ myMonitor.config(['$routeProvider', '$httpProvider',
                 controller: WelcomeController,
                 resolve: MasterController.resolve
             }).
+            when('/settings', {
+                templateUrl: '/ui/partials/settings.php',
+                controller: SettingsController,
+                resolve: MasterController.resolve
+            }).
             when('/watchdogs', {
                 templateUrl: '/ui/partials/watchdogs.php',
                 controller: WatchdogsController,

@@ -50,7 +50,7 @@
             <!-- End Facebook -->
         </div>
         <ul id="menu">
-            <li class="ui-state-disabled"><a href="#">Settings</a></li>
+            <li><a href="#/settings">Settings</a></li>
             <li><a href="#/logout">Log out</a></li>
         </ul>
     </div>

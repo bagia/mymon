@@ -78,6 +78,8 @@ class WatchdogController extends BaseController {
     }
 
     public function watchdogsPower($f3, $params) {
+        set_time_limit(3600);
+
         $post = JsonHelper::getPOST();
         $facebook = FacebookHelper::getFacebook();
         $user_id = FacebookHelper::getUserId();
@@ -176,6 +178,8 @@ class WatchdogController extends BaseController {
     }
 
     public function watchdogsPowerDelete($f3, $params) {
+        set_time_limit(3600);
+
         $user_id = FacebookHelper::getUserId();
         $facebook = FacebookHelper::getFacebook();
         $facebook->setExtendedAccessToken();

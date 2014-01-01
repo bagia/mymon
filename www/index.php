@@ -6,6 +6,7 @@ $f3->route ("GET /test", "\\Prospe\\Controller\\TestController->testAction");
 
 // Master route
 $f3->route ("GET /", "\\Prospe\\Controller\\MasterController->masterAction");
+$f3->route ("GET /clean", "\\Prospe\\Controller\\MasterController->cleanAction");
 
 // In case we need to inject some data from the configuration in the Javascript files:
 $f3->route ("GET /ui/js/@script_name.js", "\\Prospe\\Controller\\JavascriptController->getScript");

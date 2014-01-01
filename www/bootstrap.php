@@ -1,6 +1,4 @@
 <?php
-set_time_limit(0);
-
 $f3 = require_once("lib/base.php");
 
 if ((float)PCRE_VERSION < 7.9)

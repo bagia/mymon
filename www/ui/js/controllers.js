@@ -259,3 +259,6 @@ function LogoutController($rootScope, FB) {
 
 function PrivacyController() {
 }
+
+function SettingsController() {
+}
