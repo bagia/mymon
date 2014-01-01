@@ -17,9 +17,11 @@ class FacebookHelper {
             'secret' => $f3->get('FACEBOOK_APPSECRET'),
             'cookie' => true,
         ));
-        $access_token = \Base::instance()->get('GET.access_token');
-        if (!empty($access_token))
-            $facebook->setAccessToken($access_token);
+        $facebook->setExtendedAccessToken();
+//        $access_token = \Base::instance()->get('GET.access_token');
+//        if (!empty($access_token))
+//            $facebook->setAccessToken($access_token);
+
 
         return $facebook;
     }
@@ -46,9 +48,9 @@ class FacebookHelper {
     public static function getUserId() {
         if (!isset(self::$_user_id)) {
             $facebook = self::getFacebook();
-            $access_token = $facebook->getAccessToken();
-            if (empty($access_token))
-                $facebook->setAccessToken(\Base::instance()->get('GET.access_token'));
+//            $access_token = $facebook->getAccessToken();
+//            if (empty($access_token))
+//                $facebook->setAccessToken(\Base::instance()->get('GET.access_token'));
             $me = $facebook->api('/me?fields=id');
             self::$_user_id = $me['id'];
         }

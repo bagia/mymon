@@ -97,7 +97,7 @@ class WatchdogController extends BaseController {
             if (!$f3->get('PROD')) {
                 // Not in prod
                 $asyncTask->addStep(function() {
-                   sleep(1);
+                   sleep(10);
                 });
             } else {
                 $asyncTask->addStep(function () use($index, $access_token, $facebook,
@@ -138,6 +138,7 @@ class WatchdogController extends BaseController {
         $task = new \Prospe\Model\TaskModel();
         $task->task_id = $identifier;
         $task->user_id = $user_id;
+        $task->name = 'Deployment';
         $task->save();
 
         // Schedule deletion of the entry in the database

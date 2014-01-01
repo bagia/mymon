@@ -7,8 +7,10 @@ var myMonitor = angular.module('myMonitor', [
     });
 });
 
-myMonitor.config(['$routeProvider',
-    function ($routeProvider) {
+myMonitor.config(['$routeProvider', '$httpProvider',
+    function ($routeProvider, $httpProvider) {
+        $httpProvider.withCredentials = true;
+
         $routeProvider.
             when('/', {
                 templateUrl: '/ui/partials/welcome.php',
@@ -50,6 +52,15 @@ myMonitor.filter('parenthesis', function () {
             return '';
 
         return '(' + value + ')';
+    }
+});
+
+myMonitor.filter('unknown', function () {
+    return function (value) {
+        if (value < 0)
+            return '-';
+
+        return value;
     }
 });
 
