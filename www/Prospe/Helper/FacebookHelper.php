@@ -15,6 +15,7 @@ class FacebookHelper {
         $facebook = new \Facebook(array(
             'appId' => $f3->get('FACEBOOK_APPID'),
             'secret' => $f3->get('FACEBOOK_APPSECRET'),
+            'cookie' => true,
         ));
         $access_token = \Base::instance()->get('GET.access_token');
         if (!empty($access_token))
