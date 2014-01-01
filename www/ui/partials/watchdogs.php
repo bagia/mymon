@@ -1,6 +1,6 @@
 <div class="content">
     <h3>My watchdogs</h3>
-    <a href="/#/new">new</a>
+    <div><a href="/#/new">new</a> | <a href="/#/power">power</a> | <a href="javascript:void()" ng-click="delete_power()">delete power</a></div>
     <div id="accordion">
             <h3 ng-repeat-start="watchdog in watchdogs" accordion-directive>
                 #{{watchdog.id}}

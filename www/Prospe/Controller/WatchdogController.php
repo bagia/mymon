@@ -191,19 +191,47 @@ class WatchdogController extends BaseController {
         $asyncTask->addDependency('F3', './bootstrap.php');
 
         foreach($watchdogs as $watchdog) {
-            $watchdog_id = $watchdog->id;
-            $asyncTask->addStep(function () use ($facebook, $access_token, $watchdog_id) {
-                $watchdog = new \Prospe\Model\WatchdogModel();
-                $watchdog->load(array('id=?', $watchdog_id));
-                $facebook->setAccessToken($access_token);
-                $article = $watchdog->fb_article;
-                $response = $facebook->api("/{$article}", 'DELETE');
-                if (!isset($response['error'])) {
-                    $watchdog->erase();
-                }
+            if (!$f3->get('PROD')) {
+                // Not in prod
+                $asyncTask->addStep(function() {
+                    sleep(10);
+                });
+            } else {
+                $watchdog_id = $watchdog->id;
+                $asyncTask->addStep(function () use ($facebook, $access_token, $watchdog_id) {
+                    $watchdog = new \Prospe\Model\WatchdogModel();
+                    $watchdog->load(array('id=?', $watchdog_id));
+                    $facebook->setAccessToken($access_token);
+                    $article = $watchdog->fb_article;
+                    $response = $facebook->api("/{$article}", 'DELETE');
+                    if (!isset($response['error'])) {
+                        $watchdog->erase();
+                    }
 
-            });
+                });
+            }
         }
+
+        $identifier = $asyncTask->getIdentifier();
+
+        // Register the task
+        $task = new \Prospe\Model\TaskModel();
+        $task->task_id = $identifier;
+        $task->user_id = $user_id;
+        $task->name = 'Deletion';
+        $task->save();
+
+        // Schedule deletion of the entry in the database
+        $asyncTask->addStep(function () use ($identifier) {
+            $task = new \Prospe\Model\TaskModel();
+            $tasks = $task->find(array(
+                'task_id=?', $identifier
+            ));
+            if (count($tasks) > 0) {
+                $task = reset($tasks);
+                $task->erase();
+            }
+        });
 
         $asyncTask->autoDelete();
         $task_id = $asyncTask->start();

@@ -101,7 +101,7 @@ MasterController.resolve = {
 function WelcomeController() {
 }
 
-function WatchdogsController($scope, $rootScope, $http, FB) {
+function WatchdogsController($scope, $rootScope, $http, $timeout, FB) {
     $scope.delete = function(id) {
         var query = '/watchdogs/' + id;
         console.log(query);
@@ -115,6 +115,18 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
                 } else {
                     alert('Failed to delete.');
                 }
+            });
+    }
+
+    $scope.delete_power = function() {
+        var query = '/watchdogs/power';
+        console.log(query);
+        $http.delete(query)
+            .success(function (response) {
+                console.log(response);
+                var task = {task_id: response.task_id, progress:0, name: 'Deletion'};
+                $rootScope.background_tasks.push(task);
+                followTask(task.task_id, $http, $timeout, $rootScope);
             });
     }
 
@@ -161,8 +173,6 @@ function PowerController($rootScope, $scope, $http, $timeout) {
         $http.post(query, data).
             success(function(response){
                 console.log(response);
-
-                var task_id = response.task_id;
                 var task = {task_id: response.task_id, progress:0, name: 'Deployment'};
                 $rootScope.background_tasks.push(task);
                 followTask(task.task_id, $http, $timeout, $rootScope, function (response) {
