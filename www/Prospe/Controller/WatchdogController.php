@@ -57,8 +57,8 @@ class WatchdogController extends BaseController {
         $watchdog = $this->getModel();
         $watchdog->generateRandomImageName();
         $watchdog->user_id = FacebookHelper::getUserId();
-        $watchdog->name = htmlentities($f3->get('POST.name'));
-        $notify_user = htmlentities($f3->get('POST.notify_user'));
+        $watchdog->name = $f3->get('POST.name');
+        $notify_user = $f3->get('POST.notify_user');
         if (!empty($notify_user)) {
             $watchdog->notify_user = $notify_user;
         }
@@ -123,7 +123,7 @@ class WatchdogController extends BaseController {
                     $watchdog = new \Prospe\Model\WatchdogModel();
                     $watchdog->generateRandomImageName();
                     $watchdog->user_id = $user_id;
-                    $watchdog->name = htmlentities($friend['name']);
+                    $watchdog->name = $friend['name'];
                     $watchdog->fb_app = $facebook->getAppId();
                     if (!empty($notify_user)) {
                         $watchdog->notify_user = $notify_user;
