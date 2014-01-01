@@ -15,8 +15,7 @@ MasterController.resolve = {
             id: -1,
             connected: false,
             name: '',
-            picture: '',
-            access_token: ''
+            picture: ''
         };
 
         // Check if the user is logged in
@@ -25,7 +24,6 @@ MasterController.resolve = {
 
                 // Update UI
                 $rootScope.user.connected = true;
-                $rootScope.user.access_token = response.authResponse.accessToken;
 
                 // Get the name and the third party id of the user
                 FB.api('/me?fields=id,name', function (response) {
@@ -39,7 +37,7 @@ MasterController.resolve = {
                         $rootScope.user.picture = response.data.url;
 
                         // Get count of watchdogs
-                        $http.get('/watchdogs/count?access_token=' + $rootScope.user.access_token)
+                        $http.get('/watchdogs/count')
                             .success(function (response) {
                                 $rootScope.watchdogs_count = response.data;
                                 deferred.resolve($rootScope.user);
@@ -62,7 +60,7 @@ function WelcomeController() {
 
 function WatchdogsController($scope, $rootScope, $http, FB) {
     $scope.delete = function(id) {
-        var query = '/watchdogs/' + id + '?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs/' + id;
         console.log(query);
         $http.delete(query)
             .success(function (response) {
@@ -78,7 +76,7 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
     }
 
     if ($rootScope.user.connected) {
-        var query = '/watchdogs/list?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs/list';
         console.log(query);
         $http.get(query)
             .success(function (response) {
@@ -102,7 +100,7 @@ function PowerController($rootScope, $scope, $http, $timeout) {
         } else {
             data.notify_user = 0;
         }
-        var query = '/watchdogs/power?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs/power';
         console.log(query);
         console.log(data);
 
@@ -114,7 +112,7 @@ function PowerController($rootScope, $scope, $http, $timeout) {
                 (function loopsiloop(){
                     $timeout(function(){
                         console.log('polling task...');
-                        var query = '/tasks/' + encodeURIComponent(task_id) + '?access_token=' + $rootScope.user.access_token;
+                        var query = '/tasks/' + encodeURIComponent(task_id);
                         console.log(query);
                         $http.get(query).success(function(response) {
                             $( "#progressbar" ).progressbar({
@@ -149,7 +147,7 @@ function NewController($rootScope, $scope, $http, FB) {
         if (this.notify_user > 0) {
             data  += '&notify_user=' + $rootScope.user.id;
         }
-        var query = '/watchdogs?access_token=' + $rootScope.user.access_token;
+        var query = '/watchdogs';
         console.log(data);
         var link = this.link;
 
