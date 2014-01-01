@@ -20,6 +20,20 @@ class WatchdogController extends BaseController {
         return new \Prospe\Model\WatchdogModel();
     }
 
+    public function updateNameAction($f3, $params) {
+        $post = JsonHelper::getPOST();
+        $watchdog = new \Prospe\Model\WatchdogModel();
+        $watchdogs = $watchdog->find(array(
+            'user_id=? and id=?', FacebookHelper::getUserId(), $params['watchdog_id']
+        ));
+        $watchdog = reset($watchdogs);
+        $watchdog->name = $post->name;
+        $watchdog->save();
+
+        $f3->set('status', 1);
+        echo \View::instance()->render('json/watchdogs/status.php');
+    }
+
     public function watchdogsCount ($f3, $params) {
         $f3->set('count',
             $this->getModel()->count(array(
@@ -59,7 +73,7 @@ class WatchdogController extends BaseController {
             'user_id=?', FacebookHelper::getUserId()
         ));
         $f3->set('status', $status);
-        echo \View::instance()->render('json/watchdogs/delete.php');
+        echo \View::instance()->render('json/watchdogs/status.php');
 
     }
 

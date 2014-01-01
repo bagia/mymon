@@ -241,9 +241,9 @@ code {
      float: right;
  }
 
-#accordion .watchdog-detail .delete-link a {
-    color: rgb(102, 102, 255);
-    cursor: pointer;
+.link {
+    color: rgb(102, 102, 255) !important;
+    cursor: pointer !important;
 }
 
 #progressbar {
@@ -269,4 +269,10 @@ code {
     margin-left: -32px; /* -1 * image width / 2 */
     margin-top: -32px; /* -1 * image height / 2 */
     display: block;
+}
+
+.inline-edit {
+    margin: 0px !important;
+    width: 100px !important;
+    height: 13px !important;
 }

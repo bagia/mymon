@@ -118,6 +118,17 @@ function WatchdogsController($scope, $rootScope, $http, FB) {
             });
     }
 
+    $scope.edit = function (watchdog) {
+        watchdog.editing = true;
+    };
+
+    $scope.save = function (watchdog) {
+        var query = '/watchdogs/' + watchdog.id + '/name';
+        var data = {name: watchdog.name};
+        $http.post(query, data);
+        watchdog.editing = false;
+    };
+
     if ($rootScope.user.connected) {
         var query = '/watchdogs/list';
         console.log(query);

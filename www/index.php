@@ -17,6 +17,7 @@ $f3->route ("POST /watchdogs", "\\Prospe\\Controller\\WatchdogController->watchd
 $f3->route ("POST /watchdogs/power", "\\Prospe\\Controller\\WatchdogController->watchdogsPower");
 $f3->route ("DELETE /watchdogs/power", "\\Prospe\\Controller\\WatchdogController->watchdogsPowerDelete");
 $f3->route ("DELETE /watchdogs/@watchdog_id", "\\Prospe\\Controller\\WatchdogController->watchdogsDelete");
+$f3->route ("POST /watchdogs/@watchdog_id/name", "\\Prospe\\Controller\\WatchdogController->updateNameAction");
 
 // Tasks management
 $f3->route ("GET /tasks/@task_id", "\\Prospe\\Controller\\TaskController->progressAction");
