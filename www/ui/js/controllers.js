@@ -114,15 +114,19 @@ function PowerController($rootScope, $scope, $http, $timeout) {
                 (function loopsiloop(){
                     $timeout(function(){
                         console.log('polling task...');
-                        var query = '/watchdogs/power/task/' + encodeURIComponent(task_id) + '?access_token=' + $rootScope.user.access_token;
+                        var query = '/tasks/' + encodeURIComponent(task_id) + '?access_token=' + $rootScope.user.access_token;
                         console.log(query);
                         $http.get(query).success(function(response) {
                             $( "#progressbar" ).progressbar({
                                 value: response.progress
                             });
-
+                            loopsiloop();
+                        }).error(function() {
+                            $( "#progressbar" ).progressbar({
+                                value: 100
+                            });
                         });
-                        loopsiloop();
+
                     }, 5000);
                 })();
             }).error(function(data){

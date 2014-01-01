@@ -1,4 +1,5 @@
 [globals]
+PROD=1
 DEBUG=0
 UI=ui/
 AUTOLOAD=/path/to/root

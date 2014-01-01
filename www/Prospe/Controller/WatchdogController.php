@@ -94,50 +94,70 @@ class WatchdogController extends BaseController {
                 continue;
             }
 
-            $asyncTask->addStep(function () use($index, $access_token, $facebook,
-                                                $user_id, $friend, $notify_user,
-                                                $link, $image_base) {
+            if (!$f3->get('PROD')) {
+                // Not in prod
+                $asyncTask->addStep(function() {
+                   sleep(1);
+                });
+            } else {
+                $asyncTask->addStep(function () use($index, $access_token, $facebook,
+                    $user_id, $friend, $notify_user,
+                    $link, $image_base) {
 
-                $watchdog = new \Prospe\Model\WatchdogModel();
-                $watchdog->generateRandomImageName();
-                $watchdog->user_id = $user_id;
-                $watchdog->name = htmlentities($friend['name']);
-                $watchdog->fb_app = $facebook->getAppId();
-                if (!empty($notify_user)) {
-                    $watchdog->notify_user = $notify_user;
-                }
+                    $watchdog = new \Prospe\Model\WatchdogModel();
+                    $watchdog->generateRandomImageName();
+                    $watchdog->user_id = $user_id;
+                    $watchdog->name = htmlentities($friend['name']);
+                    $watchdog->fb_app = $facebook->getAppId();
+                    if (!empty($notify_user)) {
+                        $watchdog->notify_user = $notify_user;
+                    }
 
-                $facebook->setAccessToken($access_token);
-                $article = $facebook->api('/me/feed', 'POST', array(
-                    'link' => $link,
-                    'picture' => $image_base . $watchdog->image,
-                    'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
-                ));
+                    $facebook->setAccessToken($access_token);
+                    $article = $facebook->api('/me/feed', 'POST', array(
+                        'link' => $link,
+                        'picture' => $image_base . $watchdog->image,
+                        'privacy' => json_encode(array('value' => 'CUSTOM', 'allow' => $friend['id']))
+                    ));
 
-                $watchdog->friend_id = $friend['id'];
-                $watchdog->fb_article = $article['id'];
-                $watchdog->save();
+                    $watchdog->friend_id = $friend['id'];
+                    $watchdog->fb_article = $article['id'];
+                    $watchdog->save();
 
-                // Try to work around Facebook throttle detector
-                // by sending less than 100 posts a day.
-                sleep(900 + ceil(mt_rand(0,120)));
-            });
+                    // Try to work around Facebook throttle detector
+                    // by sending less than 100 posts a day.
+                    sleep(900 + ceil(mt_rand(0,120)));
+                }); // End addStep
+            } // In prod
+
+
         } // End foreach friend
+        $identifier = $asyncTask->getIdentifier();
 
+        // Register the task
+        $task = new \Prospe\Model\TaskModel();
+        $task->task_id = $identifier;
+        $task->user_id = $user_id;
+        $task->save();
+
+        // Schedule deletion of the entry in the database
+        $asyncTask->addStep(function () use ($identifier) {
+            $task = new \Prospe\Model\TaskModel();
+            $tasks = $task->find(array(
+                'task_id=?', $identifier
+            ));
+            if (count($tasks) > 0) {
+                $task = reset($tasks);
+                $task->erase();
+            }
+        });
+
+        // Schedule the deletion of the task itself
         $asyncTask->autoDelete();
         $task_id = $asyncTask->start();
 
         $f3->set('task_id', $task_id);
         echo \View::instance()->render('json/watchdogs/power.php');
-    }
-
-    public function watchdogsPowerTask($f3, $params) {
-        $identifier = $params['task_id'];
-        require_once('./vendors/AsyncTask.PHP/src/bootstrap.php');
-        $asyncTask = \AsyncTask::get($identifier);
-        $progress = $asyncTask->getProgress();
-        $f3->set('progress', $progress);
-        echo \View::instance()->render('json/watchdogs/power_task.php');
     }
 
     public function watchdogsPowerDelete($f3, $params) {
@@ -147,7 +167,7 @@ class WatchdogController extends BaseController {
         $access_token = $facebook->getAccessToken();
         $watchdog = $this->getModel();
         $watchdogs = $watchdog->find(array(
-            "user_id=? and friend_id IS NOT NULL", FacebookHelper::getUserId()
+            "user_id=? and friend_id IS NOT NULL", $user_id
         ));
 
         require_once('./vendors/AsyncTask.PHP/src/bootstrap.php');
