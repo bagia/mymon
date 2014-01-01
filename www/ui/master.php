@@ -38,8 +38,10 @@
     </div>
     <div id="user">
         <div ng-show="user.connected" id="mywatchdogs">
-            <a href="#/watchdogs">My watchdogs {{watchdogs_count | parenthesis}}</a>
-            <div ng-repeat="task in background_tasks">{{task.name}}: {{task.progress | unknown}}%</div>
+            <a href="#/watchdogs">My watchdogs</a>
+            <div ng-repeat="task in background_tasks">
+                <div ng-hide="task.progress<0">{{task.name}}: {{task.progress | unknown}}%</div>
+            </div>
         </div>
         <div id="avatar">
             <!-- Begin Facebook -->

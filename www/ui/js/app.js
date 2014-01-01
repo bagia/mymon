@@ -57,31 +57,26 @@ myMonitor.factory('httpInterceptor', function ($q, $rootScope, $log) {
 
     return {
         request: function (config) {
-
+            // Do not show the loader if we are polling a task
+            if (!(config.method == 'GET' && config.url.indexOf('/tasks/') == 0)) {
+                $rootScope.$broadcast("loader_show");
+            }
             numLoadings++;
 
-            // Show loader
-            $rootScope.$broadcast("loader_show");
             return config || $q.when(config)
 
         },
         response: function (response) {
-
             if ((--numLoadings) === 0) {
-                // Hide loader
                 $rootScope.$broadcast("loader_hide");
             }
-
             return response || $q.when(response);
 
         },
         responseError: function (response) {
-
             if (!(--numLoadings)) {
-                // Hide loader
                 $rootScope.$broadcast("loader_hide");
             }
-
             return $q.reject(response);
         }
     };

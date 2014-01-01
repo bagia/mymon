@@ -24,10 +24,10 @@ class ImageController extends BaseController {
 
             $now = new \DateTime();
 
-            // If the watchdog is less than 10 days old,
+            // If the watchdog is less than 5 days old,
             // do not record the hit.
             $created = new \DateTime($watchdog->created);
-            if (DateHelper::diff($now, $created) <= 10 * 24 * 3600) {
+            if (DateHelper::diff($now, $created) <= 5 * 24 * 3600) {
                 $f3->error(404);
                 return;
             }

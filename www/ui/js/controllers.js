@@ -68,24 +68,16 @@ MasterController.resolve = {
                     FB.api("/me/picture?width=50&height=50", function (response) {
                         $rootScope.user.picture = response.data.url;
 
-                        // Get count of watchdogs
-                        $http.get('/watchdogs/count')
-                            .success(function (response) {
-                                $rootScope.watchdogs_count = response.data;
-
-                                $http.get('/tasks/list')
-                                    .success(function(response) {
-                                        console.log(response);
-                                        angular.forEach(response, function(task) {
-                                            task.progress = -1;
-                                            $rootScope.background_tasks.push(task);
-                                            followTask(task.task_id, $http, $timeout, $rootScope);
-                                        });
-                                        deferred.resolve($rootScope.user);
-                                    });
-
+                        $http.get('/tasks/list')
+                            .success(function(response) {
+                                console.log(response);
+                                angular.forEach(response, function(task) {
+                                    task.progress = -1;
+                                    $rootScope.background_tasks.push(task);
+                                    followTask(task.task_id, $http, $timeout, $rootScope);
+                                });
+                                deferred.resolve($rootScope.user);
                             });
-
                     });
                 });
             } else {
@@ -111,7 +103,6 @@ function WatchdogsController($scope, $rootScope, $http, $timeout, FB) {
                 if (response.data > 0) {
                     $('#wd-' + id).prev().fadeOut();
                     $('#wd-' + id).fadeOut();
-                    $rootScope.watchdogs_count--;
                 } else {
                     alert('Failed to delete.');
                 }
@@ -230,9 +221,6 @@ function NewController($rootScope, $scope, $http, FB) {
                     function (response) {
                         $( "#progressbar" ).progressbar({
                             value: 100
-                        });
-                        $rootScope.$apply(function(){
-                            $rootScope.watchdogs_count++;
                         });
 
                         if (response && !response.error) {
