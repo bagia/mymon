@@ -1,8 +1,40 @@
 function MasterController($document, $http, $rootScope, FB) {
 }
 
+function setProgressOfTask(task_id, progress, $rootScope) {
+    angular.forEach($rootScope.background_tasks, function(value, key) {
+        if (value.task_id == task_id) {
+            $rootScope.background_tasks[key].progress = progress;
+        }
+    });
+}
+
+function followTask(task_id, $http, $timeout, $rootScope, success_callback, error_callback, refresh) {
+    if (refresh == undefined) {
+        refresh = 0;
+    }
+
+    $timeout(function(){
+        var query = '/tasks/' + encodeURIComponent(task_id);
+        console.log(query);
+        $http.get(query).success(function(response) {
+            setProgressOfTask(task_id, response.progress, $rootScope);
+            if (success_callback != undefined) {
+                success_callback(response);
+            }
+            followTask(task_id, $http, $timeout, $rootScope, success_callback, error_callback, 5000);
+        }).error(function(error) {
+            setProgressOfTask(task_id, -1, $rootScope);
+            if (error_callback != undefined) {
+                error_callback(error);
+            }
+            console.log(error);
+        });
+    }, refresh);
+}
+
 MasterController.resolve = {
-    user: function ($rootScope, $http, $rootScope, $q) {
+    user: function ($rootScope, $http, $rootScope, $q, $timeout) {
         var deferred = $q.defer();
 
         if ($rootScope.user != undefined && $rootScope.user.connected) {
@@ -17,11 +49,11 @@ MasterController.resolve = {
             name: '',
             picture: ''
         };
+        $rootScope.background_tasks = new Array();
 
         // Check if the user is logged in
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
-
                 // Update UI
                 $rootScope.user.connected = true;
 
@@ -40,7 +72,18 @@ MasterController.resolve = {
                         $http.get('/watchdogs/count')
                             .success(function (response) {
                                 $rootScope.watchdogs_count = response.data;
-                                deferred.resolve($rootScope.user);
+
+                                $http.get('/tasks/list')
+                                    .success(function(response) {
+                                        console.log(response);
+                                        angular.forEach(response, function(task) {
+                                            task.progress = -1;
+                                            $rootScope.background_tasks.push(task);
+                                            followTask(task.task_id, $http, $timeout, $rootScope);
+                                        });
+                                        deferred.resolve($rootScope.user);
+                                    });
+
                             });
 
                     });
@@ -106,27 +149,17 @@ function PowerController($rootScope, $scope, $http, $timeout) {
 
         $http.post(query, data).
             success(function(response){
-                var task_id = response.task_id;
                 console.log(response);
 
-                (function loopsiloop(){
-                    $timeout(function(){
-                        console.log('polling task...');
-                        var query = '/tasks/' + encodeURIComponent(task_id);
-                        console.log(query);
-                        $http.get(query).success(function(response) {
-                            $( "#progressbar" ).progressbar({
-                                value: response.progress
-                            });
-                            loopsiloop();
-                        }).error(function() {
-                            $( "#progressbar" ).progressbar({
-                                value: 100
-                            });
-                        });
+                var task_id = response.task_id;
+                var task = {task_id: response.task_id, progress:0, name: 'Deployment'};
+                $rootScope.background_tasks.push(task);
+                followTask(task.task_id, $http, $timeout, $rootScope, function (response) {
+                    $( "#progressbar" ).progressbar({
+                        value: response.progress
+                    });
+                });
 
-                    }, 5000);
-                })();
             }).error(function(data){
                 console.log(data);
             });

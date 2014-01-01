@@ -20,6 +20,7 @@ $f3->route ("DELETE /watchdogs/@watchdog_id", "\\Prospe\\Controller\\WatchdogCon
 
 // Tasks management
 $f3->route ("GET /tasks/@task_id", "\\Prospe\\Controller\\TaskController->progressAction");
+$f3->route ("GET /tasks/list", "\\Prospe\\Controller\\TaskController->getAction");
 
 
 // Detect trafic from Facebook

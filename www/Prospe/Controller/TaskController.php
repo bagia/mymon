@@ -29,6 +29,16 @@ class TaskController extends BaseController {
         }
     }
 
+    public function getAction($f3, $params) {
+        $task = new \Prospe\Model\TaskModel();
+        $tasks = $task->find(array(
+            'user_id=?', FacebookHelper::getUserId()
+        ));
+
+        $f3->set('tasks', $tasks);
+        echo \View::instance()->render('json/tasks/get.php');
+    }
+
     public function progressAction($f3, $params) {
         $identifier = $params['task_id'];
         require_once('./vendors/AsyncTask.PHP/src/bootstrap.php');
