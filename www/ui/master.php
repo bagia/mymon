@@ -33,6 +33,9 @@
         <li><a href="#/">Home</a></li>
         <li><a href="#/privacy">Privacy policy</a></li>
     </ul>
+    <div id="loader" loader>
+        <img src="/ui/img/loader.gif" class="ajax-loader" />
+    </div>
     <div id="user">
         <div ng-show="user.connected" id="mywatchdogs">
             <a href="#/watchdogs">My watchdogs {{watchdogs_count | parenthesis}}</a>
