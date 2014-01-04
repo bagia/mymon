@@ -1,14 +1,14 @@
 [globals]
-PROD=1
-DEBUG=0
-UI=ui/
-AUTOLOAD=/path/to/root
-FACEBOOK_APPID=###########
-FACEBOOK_APPSECRET=#######
-MYSQL_SERVER=#############
-MYSQL_PORT=###############
-MYSQL_DB=#################
-MYSQL_USER=###############
-MYSQL_PWD=################
-HTTP_USER=################
-HTTP_PASS=################
+PROD=1                        # 1 = in production, 0 = not in production
+DEBUG=0                       # F3 framework debug level
+UI=ui/                        # Directories storing the views. Do not change.
+AUTOLOAD=/path/to/root        # To be set to the actual working directory (the one where index.php is located)
+FACEBOOK_APPID=###########    # Application identifier of the Facebook app
+FACEBOOK_APPSECRET=#######    # Application secret of the Facebook app
+MYSQL_SERVER=#############    # IP or hostname of the MySQL server
+MYSQL_PORT=###############    # Port of the MySQL server
+MYSQL_DB=#################    # Name of the database to use
+MYSQL_USER=###############    # MySQL user name
+MYSQL_PWD=################    # MySQL user password
+HTTP_USER=################    # Put a user name people will need to enter in order to connect to the site
+HTTP_PASS=################    # Associated password
