@@ -5,7 +5,7 @@ body {
     width: 640px;
     margin: 2em auto
 }
-.documentation p, .documentation ol li {
+.documentation p, .documentation ol li, .documentation ul li {
     text-align: justify;
     font-size: 0.75em;
 }

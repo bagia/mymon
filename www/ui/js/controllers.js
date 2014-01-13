@@ -248,5 +248,8 @@ function LogoutController($rootScope, FB) {
 function PrivacyController() {
 }
 
+function FAQController() {
+}
+
 function SettingsController() {
 }

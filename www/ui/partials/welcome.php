@@ -2,7 +2,6 @@
     <h3>Welcome<span ng-show="user.connected">&nbsp;</span>{{user.name}},</h3>
     <h4>The <i>My Monitor</i> project</h4>
     <p>December 2013</p>
-    <h5>Introduction</h5>
     <p>Since Facebook's early ages, numerous <i>so-called</i> applications have been claiming to be able to reveal to their users
     the identity of the people visiting their profile page. Up to now all these applications can be classified in two categories:</p>
     <ol>

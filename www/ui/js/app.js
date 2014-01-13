@@ -7,6 +7,7 @@ var myMonitor = angular.module('myMonitor', [
     });
 });
 
+// Define Angular Routes
 myMonitor.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $httpProvider.withCredentials = true;
@@ -42,6 +43,11 @@ myMonitor.config(['$routeProvider', '$httpProvider',
                 controller: PrivacyController,
                 resolve: MasterController.resolve
             }).
+            when('/faq', {
+                templateUrl: '/ui/partials/faq.php',
+                controller: FAQController,
+                resolve: MasterController.resolve
+            }).
             when('/logout', {
                 templateUrl: '/ui/partials/welcome.php',
                 controller: LogoutController
@@ -51,8 +57,8 @@ myMonitor.config(['$routeProvider', '$httpProvider',
             });
     }]);
 
+// Loading UI
 myMonitor.factory('httpInterceptor', function ($q, $rootScope, $log) {
-
     var numLoadings = 0;
 
     return {
@@ -94,7 +100,7 @@ myMonitor.factory('httpInterceptor', function ($q, $rootScope, $log) {
             });
         };
     }
-);
+); // End Loading UI
 
 
 myMonitor.filter('parenthesis', function () {
