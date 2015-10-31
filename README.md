@@ -1,3 +1,8 @@
+Retired project
+======
+Facebook fixed the underlying issue that it work.
+In a nutshell, when publishing a post associated to an image that didn't exist (the server called for it would always reply 404), Akamai did not cache the result of the query. Anytime someone would see the post on Facebook, Akamai would send a request to the server supposed to host the image. By toying with post permissions, this system was able to know if a specific person had visited a profile...
+
 My Monitor
 ======
 
